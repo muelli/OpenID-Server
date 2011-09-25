@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Remove confirmation request{% endblock %}
+
+{% block content %}
+			<h2>Remove confirmation request</h2>
+
+			<p>The site <tt>{{ trust_root|escape }}</tt> will be removed from trusted.</p>
+
+			<form id="trusted_remove_confirm" method="post" action="{{ trusted_remove_url }}">
+				<p>Remove?</p>
+
+				<fieldset class="actions">
+					<input type="submit" value="Yes" />
+					<a href="{{ check_trusted_url }}">No</a>
+				</fieldset>
+			</form>
+{% endblock %}

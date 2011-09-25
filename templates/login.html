@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Password request{% endblock %}
+
+{% block head %}{{ super() }}
+		<script type="text/javascript">
+			window.onload = function () { document.getElementById("password").focus() }
+		</script>
+{% endblock %}
+
+{% block content %}
+			<h2>Password request</h2>
+
+			<form id="login" method="post" action="{{ login_url }}">
+				<fieldset>
+{{ form.render_css() }}
+				</fieldset>
+				<fieldset class="actions">
+					<input type="submit" value="Log in" />{% for item in query %}
+					<input type="hidden" name="{{ item.0|escape }}" value="{{ item.1|escape }}" />{% endfor %}
+				</fieldset>
+			</form>
+{% endblock %}

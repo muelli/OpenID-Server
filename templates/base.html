@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />{% if endpoint is defined and yadis is defined %}
+		<link rel="openid.server" href="{{ endpoint|escape }}" />
+		<meta http-equiv="x-xrds-location" content="{{ yadis|escape }}" />{% endif %}
+{% block head %}
+		<title>{% block title %}Home{% endblock %} - OpenID Server</title>
+		<style type="text/css">
+			body { 
+				margin: 0;
+				padding: 0;
+
+				font: 1.0em serif;
+
+				background-color: #EEEEEC;
+			        color: #2E3436;
+			}
+
+			a, #loggedin a:hover, #signin a:hover {
+				color: #3465A4;
+				text-decoration: underline;
+			}
+
+			a#profile_show {
+				border-bottom: 1px dashed #3465A4;
+				text-decoration: none;
+			}
+
+			tt, a:hover, #main p.message {
+				background-color: #FCE94F;
+			}
+
+			h1, #main {
+				display: block;
+				
+				margin: 0;
+				padding-left: 20%; padding-right: 20%;
+			}
+
+			h1 { 
+				display: block;
+				
+				padding-top: 1.5em; padding-bottom: 0.5em;
+
+				background-color: #729FCF; 
+				border-bottom: 0.2em solid #3465A4;
+			}
+
+			#loggedin, #signin {
+				display: block;
+				float: right; 
+
+				margin-top: -2.6em; margin-right: 20%;
+
+				font-size: 1.1em;
+			}
+
+			h1, #loggedin, #loggedin a, #signin, #signin a {
+				color: #EEEEEC;
+			}
+			
+			#main p, #change_password, #login, #trusted_remove_confirm, #options, #profile {
+				background-color: #FFFFFF;
+				
+				margin-left: -2em; margin-right: -2em;
+				padding: 1em 2em;
+
+				-moz-border-radius: 0.5em;
+				-webkit-border-radius: 0.5em;
+			}
+
+			#main p, #options {
+				border: 0.2em solid #FFFFFF;
+			}
+
+			#change_password, #login, #trusted_remove_confirm {
+				border: 0.2em solid #D3D7CF;
+			}
+
+			fieldset {
+				margin: 0.5em 0;
+
+				border: none;
+			}
+
+			fieldset.actions {
+				margin-top: 1em;
+
+				border-top: 0.2em solid #555753;
+			}
+
+			fieldset strong.wrong {
+				display: block;
+
+				color: #EF2929;
+			}
+
+			#options {
+				list-style: inside;
+			}
+
+			#options li {
+				padding: 0.3em 0;
+
+				font-size: 1.1em;
+			}
+
+			#trusted {
+				list-style-type: none;
+				padding: 0;
+				border-top: 0.1em dashed #555753;
+			}
+
+			#trusted li {
+				display: block;
+				padding: 1em 0.5em;
+				border-bottom: 0.1em dashed #555753;
+			}
+
+			#trusted li a {
+				display: none;
+				float: right;
+
+				margin: -0.5em 0 -0.5em 1em;
+				padding: 0.5em 1em;
+
+				background-color: red;
+				color: #FFFFFF;
+
+				-moz-border-radius: 0.5em;
+				-webkit-border-radius: 0.5em;
+			}
+			
+			#trusted li:hover {
+				background-color: #FFFFFF;
+			}
+
+			#trusted li:hover a {
+				display: block;
+			}
+		</style>
+{% endblock %}
+	</head>
+    <body>
+		<h1>OpenID Server</h1>{% if logged_in==True %}
+
+		<p id="loggedin">Logged in. <a href="{{ logout_url }}">Log out</a>, <a href="{{ change_password_url }}">Change password</a>.</p>{% else %}
+		<p id="signin"><a href="{{ login_url }}">Log in</a>.</p>{% endif %}
+
+		<div id="main">{% if logged_in==True and no_password==True %}
+
+			<p class="message">First of all you need to <a href="{{ change_password_url }}">set up you access password</a>.</p>{% endif %}{% block content %}{% if logged_in==True %}
+
+			<h2>Home</h2>
+			<p>Hi, I'am your own OpenID server.</p>
+			<ul id="options">
+				<li><a href="{{ logout_url }}">log out from here</a></li>
+				<li><a href="{{ change_password_url }}">change access password</a></li>
+				<li><a href="{{ check_trusted_url }}">check trusted list</a></li>
+			</ul>{% else %}
+			<p>I'am ready. Please <a href="{{ login_url }}">log in</a>.</p>
+			{% endif %}
+{% endblock %}
+		</div>
+	</body>
+</html>
+

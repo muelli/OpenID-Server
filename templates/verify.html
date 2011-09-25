@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Verification request{% endblock %}
+
+{% block head %}{{ super() }}
+		<script type="text/javascript">
+			window.onload = function () {
+				document.getElementById("profile").style.display = "none"
+				document.getElementById("profile_show").onclick = function () {
+					document.getElementById("profile").style.display = "block"
+					document.getElementById("profile_teaser").innerHTML = document.getElementById("profile_show").innerHTML
+					return false
+				}
+			}
+		</script>
+{% endblock %}
+
+{% block content %}
+			<h2>Verification request</h2>
+
+			<p>The site <tt>{{ trust_root|escape }}</tt> has requested verification of your OpenID as <tt>{{ identity|escape }}</tt>.</p>
+
+			<form id="verify" method="post" action="{{ decision_url }}">
+				<p>Verify your identity to the relying party?</p>
+
+				<fieldset class="actions">
+					<input type="submit" value="Yes (Allow)" name="approve" />
+					<input type="submit" value="Always (Allow)" name="always" />
+					<input type="submit" value="No (Cancel)" name="decline" />{% for item in query %}
+					<input type="hidden" name="{{ item.0|escape }}" value="{{ item.1|escape }}" />{% endfor %}
+					{{ logout_form.render_css() }}
+				</fieldset>
+			</form>{% if profile %}
+
+			<p id="profile_teaser"><a id="profile_show" href="#">Relying party also require you profile information</a></p>
+			<ul id="profile">{% for name, value in profile %}
+				<li>{{ name|escape }}: {% if value %}<tt>{{ value|escape }}</tt>{% else %}No data available{% endif %}</li>{% endfor %}
+			</ul>{% endif %}
+{% endblock %}
