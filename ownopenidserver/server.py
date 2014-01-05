@@ -736,12 +736,21 @@ _ROOT = os.path.abspath(os.path.dirname(__file__))
 
 def init(
             root_store_path,
-            trust_root_store_path,
-            session_store_path,
-            password_store_path,
+            trust_root_store_path=None,
+            session_store_path=None,
+            password_store_path=None,
             templates_path=os.path.join(_ROOT, 'templates'),
             debug=False
         ):
+
+    if trust_root_store_path is None:
+        trust_root_store_path = os.path.join(root_store_path, 'trust_root')
+
+    if session_store_path is None:
+        session_store_path  = os.path.join(root_store_path, 'sessions')
+
+    if password_store_path is None:
+        password_store_path  = os.path.join(root_store_path)
 
     context = globals()
 
