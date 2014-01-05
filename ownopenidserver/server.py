@@ -793,6 +793,14 @@ def init(
     return app
 
 
+def tmp_application():
+    from tempfile import mkdtemp
+    root_dir = mkdtemp('.store', 'tmpoid')
+    app = init(root_dir)
+    return app
+
+application = lambda x,y: tmp_application().wsgifunc()(x,y)
+
 if __name__ == '__main__':
     
     ROOT_STORE = 'sstore'
