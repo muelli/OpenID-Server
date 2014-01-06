@@ -322,6 +322,7 @@ class WebWideOpenIDIndex(WebHandler):
                 no_password=session.get('no_password', False),
                 endpoint=web.ctx.homedomain + web.url('/endpoint'),
                 yadis=web.ctx.homedomain + web.url('/yadis.xrds'),
+                homedomain=web.ctx.homedomain,
             )
 
 
@@ -383,7 +384,7 @@ def init(
             trust_root_store_path=None,
             session_store_path=None,
             password_store_path=None,
-            templates_path=os.path.join(_ROOT, 'templates'),
+            templates_path=os.path.join(_ROOT, 'templates', 'wideopen'),
             debug=False
         ):
 
