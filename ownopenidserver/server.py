@@ -438,6 +438,7 @@ class WebOpenIDIndex(WebHandler):
                 no_password=session.get('no_password', False),
                 endpoint=web.ctx.homedomain + web.url('/endpoint'),
                 yadis=web.ctx.homedomain + web.url('/yadis.xrds'),
+                homedomain=web.ctx.homedomain,
             )
 
 
