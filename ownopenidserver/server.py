@@ -16,7 +16,7 @@ except ImportError:
     
 import html5lib
 
-from .wideopenidserver import HCardParser
+from .wideopenidserver import HCardParser, WideOpenIDResponse
 
 
 class TrustRootStore(object):
@@ -61,18 +61,10 @@ class TrustRootStore(object):
         return os.unlink(self._get_filename(url))
 
 
-class OpenIDResponse(object):
+class OpenIDResponse(WideOpenIDResponse):
     """
     Handle requests to OpenID, including trust root lookups
     """
-
-
-    class NoneRequest(Exception):
-        """
-        Raise if request is empty
-        """
-        pass
-
 
     class DecisionNeed(Exception):
         """
@@ -86,25 +78,6 @@ class OpenIDResponse(object):
         Raise if need user to be logged in
         """
         pass
-
-
-    def _encode_response(self, response):
-        self.response = response
-        self.webresponse = self.openid.encodeResponse(self.response)
-        return self.webresponse
-
-
-    def __init__(self, server, openid, query):
-        """
-        Decode request
-        """
-
-        self.server = server
-        self.openid = openid
-        self.query = query
-
-        # parse openid request
-        self.request = self.openid.decodeRequest(query)
 
 
     def process(self, logged_in=False):
@@ -137,34 +110,6 @@ class OpenIDResponse(object):
 
         # return openid.server.server.WebResponse
         return self._encode_response(self.openid.handleRequest(self.request))
-
-
-    def approve(self, identity=None):
-        """
-        Approve request
-
-        """
-
-        if identity is None:
-            identity = self.request.identity
-
-        response = self.request.answer(
-                allow=True,
-                identity=identity
-            )
-
-        try:
-            hcards = HCardParser().parse_url(identity)
-            if hcards:
-                sreg_data = hcards.next()
-                sreg_request = sreg.SRegRequest.fromOpenIDRequest(self.request)
-                sreg_response = sreg.SRegResponse.extractResponse(sreg_request, sreg_data)
-                response.addExtension(sreg_response)
-        except:
-            pass
-            #TODO: fixme
-
-        return self._encode_response(response)
 
 
     def always(self, identity=None):
