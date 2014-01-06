@@ -125,48 +125,6 @@ class HCardParser(html5lib.HTMLParser):
         return (HCardParser.HCard(node) for node in HCardParser.getElementsByClassName(tree, 'vcard'))
         
 
-class TrustRootStore(object):
-    """
-    Store and lookup over trust root list
-    """
-
-
-    def __init__(self, directory):
-        self.directory = directory
-        if not os.path.exists(self.directory):
-            os.makedirs(self.directory)
-
-
-    def _get_filename(self, url):
-        """
-        Encode url to filename
-        TODO: doctest
-        """
-
-        url = urlparse.urlparse(url)
-        filename = urllib.quote('__'.join(tuple(url)).replace('/', '_'))
-
-        return os.path.join(self.directory, filename)
-
-
-    def items(self):
-        return [(item, os.readlink(os.path.join(self.directory, item)))
-                for item in os.listdir(self.directory)
-                if os.path.islink(os.path.join(self.directory, item))]
-
-
-    def add(self, url):
-        return os.symlink(url, self._get_filename(url))
-
-
-    def check(self, url):
-        return os.path.lexists(self._get_filename(url))
-
-
-    def delete(self, url):
-        return os.unlink(self._get_filename(url))
-
-
 class WideOpenIDResponse(object):
     """
     Handle requests to OpenID, including trust root lookups
