@@ -249,9 +249,8 @@ class WideOpenIDServer(object):
     Manage OpenID server and trust root store, emit response
     """
 
-    def __init__(self, openid_store, trust_root_store):
+    def __init__(self, openid_store):
         self.openid_store = openid_store
-        self.trust_root_store = trust_root_store
 
 
     def request(self, endpoint, query):
@@ -381,15 +380,11 @@ _ROOT = os.path.abspath(os.path.dirname(__file__))
 
 def init(
             root_store_path,
-            trust_root_store_path=None,
             session_store_path=None,
             password_store_path=None,
             templates_path=os.path.join(_ROOT, 'templates', 'wideopen'),
             debug=False
         ):
-
-    if trust_root_store_path is None:
-        trust_root_store_path = os.path.join(root_store_path, 'trust_root')
 
     if session_store_path is None:
         session_store_path  = os.path.join(root_store_path, 'sessions')
@@ -412,9 +407,7 @@ def init(
 
 
     openid_store = openid.store.filestore.FileOpenIDStore(root_store_path)
-    trust_root_store = TrustRootStore(trust_root_store_path)
-    server = WideOpenIDServer(openid_store, trust_root_store)
-    context['trust_root_store'] = trust_root_store
+    server = WideOpenIDServer(openid_store)
     context['server'] = server
 
     sessions_store = web.session.DiskStore(session_store_path)
@@ -442,7 +435,6 @@ if __name__ == '__main__':
     ROOT_STORE = 'sstore'
     TEMPLATES = os.path.join(_ROOT, 'templates')
 
-    TRUST_ROOT_STORE = os.path.join(ROOT_STORE, 'trust_root')
     SESSION_STORE = os.path.join(ROOT_STORE, 'sessions')
     PASSWORD_STORE = ROOT_STORE
-    init(ROOT_STORE, TRUST_ROOT_STORE, SESSION_STORE, PASSWORD_STORE, TEMPLATES, True).run()
+    init(ROOT_STORE, SESSION_STORE, PASSWORD_STORE, TEMPLATES, True).run()
