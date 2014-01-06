@@ -333,16 +333,12 @@ _ROOT = os.path.abspath(os.path.dirname(__file__))
 def init(
             root_store_path,
             session_store_path=None,
-            password_store_path=None,
             templates_path=os.path.join(_ROOT, 'templates', 'wideopen'),
             debug=False
         ):
 
     if session_store_path is None:
         session_store_path  = os.path.join(root_store_path, 'sessions')
-
-    if password_store_path is None:
-        password_store_path  = os.path.join(root_store_path)
 
     context = globals()
 
@@ -388,5 +384,4 @@ if __name__ == '__main__':
     TEMPLATES = os.path.join(_ROOT, 'templates')
 
     SESSION_STORE = os.path.join(ROOT_STORE, 'sessions')
-    PASSWORD_STORE = ROOT_STORE
-    init(ROOT_STORE, SESSION_STORE, PASSWORD_STORE, TEMPLATES, True).run()
+    init(ROOT_STORE, SESSION_STORE, TEMPLATES, True).run()
