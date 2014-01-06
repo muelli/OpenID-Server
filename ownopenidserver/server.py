@@ -17,6 +17,7 @@ except ImportError:
 import html5lib
 
 from .wideopenidserver import HCardParser, WideOpenIDResponse
+from .wideopenidserver import render_openid_to_response, WebHandler
 
 
 class TrustRootStore(object):
@@ -226,41 +227,6 @@ class Session(web.session.Session):
     def logged_in(self):
         return session.get('logged_in', False)
 
-
-def render_openid_to_response(response):
-    """
-    Return WebResponse as web.py response
-    """
-    if response.code in [200]:
-        for name, value in response.headers.items():
-            web.header(name, value)
-        return response.body
-    elif response.code in [302] and response.headers.has_key('location'):
-        return web.found(response.headers['location'])
-    else:
-        return web.HTTPError(str(response.code) + ' ', response.headers)
-
-
-class WebHandler(object):
-
-
-    def __init__(self):
-        self.query = web.input()
-        self.method = None
-
-
-    def GET(self, *args, **kwargs):
-        self.method = 'GET'
-        return self.request(*args, **kwargs)
-
-
-    def POST(self, *args, **kwargs):
-        self.method = 'POST'
-        return self.request(*args, **kwargs)
-
-
-    def request(self):
-        raise NotImplemented
 
 
 class WebOpenIDIndex(WebHandler):
