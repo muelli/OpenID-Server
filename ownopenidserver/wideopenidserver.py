@@ -381,7 +381,7 @@ application = lambda x,y: tmp_application().wsgifunc(x,y)
 if __name__ == '__main__':
     
     ROOT_STORE = 'sstore'
-    TEMPLATES = os.path.join(_ROOT, 'templates')
+    TEMPLATES = os.path.join(_ROOT, 'templates', 'wideopen')
 
     SESSION_STORE = os.path.join(ROOT_STORE, 'sessions')
     init(ROOT_STORE, SESSION_STORE, TEMPLATES, True).run()
