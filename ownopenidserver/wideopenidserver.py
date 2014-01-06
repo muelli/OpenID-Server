@@ -328,12 +328,6 @@ class WebOpenIDEndpoint(WebHandler):
         return render_openid_to_response(response)
 
 
-WebOpenIDLogoutForm = web.form.Form(
-            web.form.Checkbox("logout", description="Log out after"),
-        )
-
-
-
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 
 def init(
