@@ -164,7 +164,7 @@ class WideOpenIDResponse(object):
 
         # no request
         if self.request is None:
-            raise OpenIDResponse.NoneRequest
+            raise WideOpenIDResponse.NoneRequest
 
         if self.request.mode in ["checkid_immediate", "checkid_setup"]:
             return self.approve()
