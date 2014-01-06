@@ -17,7 +17,7 @@ except ImportError:
 import html5lib
 
 from .wideopenidserver import HCardParser, WideOpenIDResponse
-from .wideopenidserver import render_openid_to_response, WebHandler
+from .wideopenidserver import render_openid_to_response, WebHandler, WebOpenIDYadis
 
 
 class TrustRootStore(object):
@@ -409,31 +409,6 @@ class WebOpenIDTrustedDelete(WebHandler):
                 trusted_remove_url=web.ctx.homedomain + web.url('/account/trusted/%s/delete' % trusted_id),
                 no_password=session.get('no_password', False),
                 trust_root=trust_root,
-            )
-
-
-class WebOpenIDYadis(WebHandler):
-
-
-    def request(self):
-        import openid.consumer
-        web.header('Content-type', 'application/xrds+xml')
-        return """<?xml version="1.0" encoding="UTF-8"?>
-<xrds:XRDS xmlns:xrds="xri://$xrds" xmlns="xri://$xrd*($v*2.0)">
-    <XRD>
-        <Service priority="0">
-            <Type>%s</Type>
-            <Type>%s</Type>
-            <URI>%s</URI>
-            <LocalID>%s</LocalID>
-        </Service>
-    </XRD>
-</xrds:XRDS>\n""" %\
-            (
-                openid.consumer.discover.OPENID_2_0_TYPE,
-                openid.consumer.discover.OPENID_1_0_TYPE,
-                web.ctx.homedomain + web.url('/endpoint'),
-                web.ctx.homedomain,
             )
 
 
